@@ -1,3 +1,15 @@
-.venv
-.idea
-.env
+# Sensitive & Cluster files
+*.kubeconfig
+kubeconfig
+*.talosconfig
+talosconfig
+*.tfstate
+*.tfstate.*
+*.pem
+*.key
+
+# System & IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp

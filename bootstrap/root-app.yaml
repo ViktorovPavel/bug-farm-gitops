@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+  # Защита от случайного удаления через UI
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    # Замени на свой URL репозитория на GitHub
+    repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+    targetRevision: HEAD
+    path: apps
+    # Включаем рекурсивное чтение, чтобы ArgoCD видел приложения во всех подпапках (system, security, monitoring)
+    directory:
+      recurse: true
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+
+  # Политика автосинхронизации
+  syncPolicy:
+    automated:
+      prune: true      # Удалять ресурсы из кластера, если они удалены из Git
+      selfHeal: true   # Откатывать ручные правки (kubectl edit/apply), сделанные мимо Git
+    syncOptions:
+      - CreateNamespace=true  # Автоматически создавать namespace, если его еще нет

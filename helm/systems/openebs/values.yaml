@@ -1,0 +1,16 @@
+engines:
+  local:
+    lvm:
+      enabled: false
+    zfs:
+      enabled: false
+  replicated:
+    mayastor:
+      enabled: false
+
+localpv-provisioner:
+  enabled: true
+  helper:
+    baseDir: "/var/local/openebs"
+  localpv:
+    basePath: "/var/local/openebs"

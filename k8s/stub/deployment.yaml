@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stub-app
+  namespace: stub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stub-app
+  template:
+    metadata:
+      labels:
+        app: stub-app
+    spec:
+      containers:
+        - name: http-echo
+          image: hashicorp/http-echo:latest
+          args:
+            - "-listen=:5678"
+            - '-text=<!DOCTYPE html><html><head><title>Access Denied</title><style>body{font-family:sans-serif;background:#0f172a;color:#f8fafc;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;}.card{background:#1e293b;padding:2rem;border-radius:12px;box-shadow:0 10px 15px -3px rgba(0,0,0,0.5);text-align:center;}h1{color:#ef4444;margin-bottom:0.5rem;}p{color:#94a3b8;}</style></head><body><div class="card"><h1>403 Forbidden</h1><p>Requested domain is not configured or access is restricted.</p></div></body></html>'
+          ports:
+            - containerPort: 5678
+          resources:
+            limits:
+              cpu: 10m
+              memory: 16Mi
+            requests:
+              cpu: 5m
+              memory: 8Mi

@@ -1,21 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: cloudflared
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
     targetRevision: HEAD
-    path: argocd
-    directory:
-      recurse: true
+    path: k8s/systems/cloudflared
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: argocd
+    namespace: cloudflared   # <-- Направляем в собственный namespace
   syncPolicy:
     automated:
       prune: true

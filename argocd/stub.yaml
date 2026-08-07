@@ -1,24 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: root-app
+  name: stub
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
     targetRevision: HEAD
-    path: argocd
-    directory:
-      recurse: true
+    path: k8s/stub  # <-- Просто подтягивает всю папку k8s/stub!
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: argocd
+    namespace: envoy-gateway-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

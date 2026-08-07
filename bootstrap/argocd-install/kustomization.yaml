@@ -7,5 +7,5 @@ namespace: argocd
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/ha/install.yaml
 
-# Зона для твоих будущих кастомизаций (например, включение Server-Side Apply, настройка OIDC или Ingress)
+# Зона для будущих кастомизаций (например, включение Server-Side Apply, настройка OIDC или Ingress)
 patches: []

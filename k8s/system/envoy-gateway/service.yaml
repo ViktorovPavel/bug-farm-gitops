@@ -1,0 +1,15 @@
+# 3. Единый Сервис для Cloudflare Tunnel
+apiVersion: v1
+kind: Service
+metadata:
+  name: envoy-gateway-ingress
+  namespace: envoy-gateway-system
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 10080
+  selector:
+    gateway.envoyproxy.io/owning-gateway-name: default
+    gateway.envoyproxy.io/owning-gateway-namespace: envoy-gateway-system

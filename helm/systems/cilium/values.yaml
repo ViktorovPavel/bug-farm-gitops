@@ -1,0 +1,6 @@
+hubble:
+  enabled: true
+  relay:
+    enabled: true   # Агрегатор логов
+  ui:
+    enabled: true   # Веб-интерфейс

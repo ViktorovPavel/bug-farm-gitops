@@ -1,6 +1,28 @@
+# Использование eBPF заменяет kube-proxy (стандартная практика для Talos)
+kubeProxyReplacement: true
+
+# Настройки взаимодействия с Kubernetes API на Talos
+k8sServiceHost: localhost
+k8sServicePort: 7445
+
+# Обязательные привилегии для работы BPF и контейнеров на Talos
+securityContext:
+  privileged: true
+
+# Настройка cgroupv2 под особенности Talos OS
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+# Отключаем автоматический сброс состояния при перезапуске (решает проблемы с clean-cilium-state)
+cleanState: false
+cleanBpfState: false
+
+# Включение и конфигурация Hubble
 hubble:
   enabled: true
   relay:
-    enabled: true   # Агрегатор логов
+    enabled: true   # Агрегатор логов Hubble
   ui:
-    enabled: true   # Веб-интерфейс
+    enabled: true   # Веб-интерфейс Hubble

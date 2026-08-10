@@ -9,9 +9,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: local-path-storage
   sources:
-    - repoURL: 'https://github.com/rancher/local-path-provisioner'
-      chart: local-path-provisioner
-      targetRevision: 0.0.26
+    - repoURL: 'https://github.com/rancher/local-path-provisioner.git'
+      path: deploy/chart/local-path-provisioner
+      targetRevision: master
       helm:
         valueFiles:
           - '$values/helm/systems/local-path-provisioner/values.yaml'
@@ -23,4 +23,5 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
+      - CreateNamespace=true
       - ServerSideApply=true

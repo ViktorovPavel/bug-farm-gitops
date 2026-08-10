@@ -3,26 +3,42 @@ kind: Application
 metadata:
   name: openebs
   namespace: argocd
+  # Добавляем аннотации для правильной синхронизации
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRun
 spec:
   project: default
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: openebs
   sources:
-    # Используем стабильную версию 4.4.0
     - repoURL: 'https://openebs.github.io/openebs'
       chart: openebs
-      targetRevision: 4.4.0             # <--- Исправлено здесь
+      targetRevision: 4.4.0
       helm:
         valueFiles:
           - '$values/helm/systems/openebs/values.yaml'
+        # Дублируем параметры здесь, чтобы быть уверенным
+        parameters:
+        - name: preUpgradeHook.enabled
+          value: "false"
+        - name: localpv-provisioner.enabled
+          value: "true"
+        - name: engines.replicated.mayastor.enabled
+          value: "false"
+        - name: engines.local.lvm.enabled
+          value: "false"
+        - name: engines.local.zfs.enabled
+          value: "false"
+        - name: analytics.enabled
+          value: "false"
+        - name: ndm.enabled
+          value: "false"
 
-    # 2. Ваш Git-репозиторий с файлом values.yaml
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       ref: values
 
-    # 3. Ваш StorageClass из Git
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       path: k8s/systems/openebs
@@ -33,3 +49,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - SkipDryRun=true

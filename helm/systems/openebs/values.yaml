@@ -1,18 +1,60 @@
-# Включаем LocalPV Hostpath
+# ============================================
+# PRE-UPGRADE HOOK - ОТКЛЮЧАЕМ ПОЛНОСТЬЮ
+# ============================================
+preUpgradeHook:
+  enabled: false
+
+# ============================================
+# LOCALPV PROVISIONER ДЛЯ TALOS
+# ============================================
 localpv-provisioner:
   enabled: true
 
-  # Конфигурация для hostpath
   hostpath:
     enabled: true
     basePath: "/var/local/openebs"
+    # Для Talos важно использовать правильные mount options
+    mountOptions:
+      - bind
+      - rshared
+      - rw
 
-  # Конфигурация для helper
   helper:
     enabled: true
     baseDir: "/var/local/openebs"
 
-# Отключаем все остальные движки
+  # Важно для Talos - используем правильные образы
+  image:
+    repository: openebs/provisioner-localpv
+    tag: 4.0.0
+    pullPolicy: IfNotPresent
+
+  # Настройки безопасности для Talos
+  securityContext:
+    runAsUser: 0
+    runAsGroup: 0
+    privileged: true
+
+  # Ресурсы
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+  # Node selector для Talos
+  nodeSelector:
+    kubernetes.io/os: linux
+
+  # Tolerations для Talos
+  tolerations:
+    - operator: Exists
+
+# ============================================
+# ОТКЛЮЧАЕМ ВСЕ НЕНУЖНОЕ
+# ============================================
 engines:
   local:
     lvm:
@@ -25,17 +67,8 @@ engines:
     jiva:
       enabled: false
 
-# Отключаем телеметрию
 analytics:
   enabled: false
 
-# Отключаем NDM (Node Disk Manager) если не нужен
 ndm:
   enabled: false
-  
-preUpgradeHook:
-  enabled: true
-  image:
-    repository: bitnami/kubectl
-    tag: 1.28.15  # или "latest"
-    pullPolicy: IfNotPresent

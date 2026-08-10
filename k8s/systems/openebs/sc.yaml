@@ -8,6 +8,5 @@ provisioner: openebs.io/local
 volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 parameters:
-  basePath: "/var/local/openebs"
-  # Для hostpath провайдера
-  storage: "hostpath"
+  basePath: "/var/local/openebs"  # Изменил с BasePath на basePath (все в нижнем регистре)
+  storageType: "hostpath"

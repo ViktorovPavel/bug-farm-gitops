@@ -9,20 +9,20 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: openebs
   sources:
-    # 1. Используем чистый чарт openebs-localpv
-    - repoURL: 'https://openebs.github.io/charts'
-      chart: openebs-localpv
-      targetRevision: 3.10.0
+    # 1. Забор OCI-чарта напрямую из GitHub Packages
+    - repoURL: 'oci://ghcr.io/openebs/charts/openebs'
+      chart: openebs
+      targetRevision: 4.1.1
       helm:
         valueFiles:
           - '$values/helm/systems/openebs/values.yaml'
 
-    # 2. Ссылка на репозиторий с values.yaml
+    # 2. Ссылка на ваш репозиторий с values.yaml
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       ref: values
 
-    # 3. Манифест StorageClass из Git
+    # 3. Наш манифест StorageClass из Git
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       path: k8s/systems/openebs

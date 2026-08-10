@@ -17,7 +17,7 @@ spec:
         - '$values/helm/systems/local-path-provisioner/values.yaml'
   sources:
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
-      targetRevision: master
+      targetRevision: main
       ref: values
   syncPolicy:
     automated:

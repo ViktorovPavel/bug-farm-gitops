@@ -5,19 +5,25 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://github.com/rancher/local-path-provisioner
-    targetRevision: main
-    path: deploy
-    helm:
-      valueFiles:
-        - '$values/helm/systems/local-path-provider/values.yaml'
   destination:
-    server: https://kubernetes.default.svc
+    server: 'https://kubernetes.default.svc'
     namespace: local-path-storage
+  sources:
+    # Основной чарт
+    - repoURL: 'https://github.com/rancher/local-path-provisioner'
+      path: deploy/chart
+      targetRevision: main
+      helm:
+        valueFiles:
+          - '$values/helm/local-path-provisioner/values.yaml'
+    # Репозиторий с values-файлами
+    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
+      - ServerSideApply=true

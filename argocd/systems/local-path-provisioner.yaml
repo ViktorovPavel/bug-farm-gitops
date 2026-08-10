@@ -8,20 +8,33 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: local-path-storage
-  sources:
-    - repoURL: 'https://github.com/rancher/local-path-provisioner'
-      path: deploy/chart/local-path-provisioner
-      targetRevision: master
-      helm:
-        valueFiles:
-          - '$values/helm/systems/local-path-provisioner/values.yaml'
-    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
-      targetRevision: HEAD
-      ref: values
+  source:
+    repoURL: 'https://github.com/rancher/local-path-provisioner'
+    path: deploy/chart/local-path-provisioner
+    targetRevision: master
+    helm:
+      values: |
+        storageClass:
+          create: true
+          defaultClass: true
+          name: local-path
+          reclaimPolicy: Delete
+          volumeBindingMode: WaitForFirstConsumer
+        nodePathMap:
+          - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+            paths:
+              - /var/local-path-provisioner
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 50m
+          limits:
+            memory: 128Mi
+            cpu: 100m
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - ServerSideApply=true
       - CreateNamespace=true
+      - ServerSideApply=true

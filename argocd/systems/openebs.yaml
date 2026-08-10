@@ -9,13 +9,13 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: openebs
   sources:
-    # 1. Официальный Helm-чарт OpenEBS v4
+    # 1. Официальный Helm-чарт OpenEBS - используем более новую версию
     - repoURL: 'https://openebs.github.io/openebs'
       chart: openebs
-      targetRevision: 4.2.0
+      targetRevision: 4.2.1  # Или 4.2.2, если доступна
       helm:
         valueFiles:
-          - '$values/helm/systems/openebs/values.yaml'  # Проверьте путь
+          - '$values/helm/systems/openebs/values.yaml'
 
     # 2. Ваш Git-репозиторий с файлом values.yaml
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'

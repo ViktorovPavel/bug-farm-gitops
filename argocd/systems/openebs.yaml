@@ -10,9 +10,9 @@ spec:
     namespace: openebs
   sources:
     # 1. Используем чистый чарт openebs-localpv
-    - repoURL: 'https://openebs.github.io/openebs'
+    - repoURL: 'https://openebs.github.io/charts'
       chart: openebs-localpv
-      targetRevision: 4.1.1
+      targetRevision: 3.10.0
       helm:
         valueFiles:
           - '$values/helm/systems/openebs/values.yaml'

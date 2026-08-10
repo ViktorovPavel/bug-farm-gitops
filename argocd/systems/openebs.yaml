@@ -9,10 +9,10 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: openebs
   sources:
-    # 1. Официальный Helm-чарт OpenEBS - используем более новую версию
+    # Используем стабильную версию 4.4.0
     - repoURL: 'https://openebs.github.io/openebs'
       chart: openebs
-      targetRevision: 4.2.1  # Или 4.2.2, если доступна
+      targetRevision: 4.4.0             # <--- Исправлено здесь
       helm:
         valueFiles:
           - '$values/helm/systems/openebs/values.yaml'

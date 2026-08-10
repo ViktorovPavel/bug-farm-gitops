@@ -13,16 +13,27 @@ spec:
       labels:
         app: local-path-provisioner
       annotations:
-        # Явно говорим что поду разрешено быть privileged
+        # КРИТИЧНО: эти аннотации говорят PodSecurity что этому поду можно
         pod-security.kubernetes.io/audit: privileged
         pod-security.kubernetes.io/enforce: privileged
         pod-security.kubernetes.io/warn: privileged
     spec:
       serviceAccountName: local-path-provisioner
+      # Добавляем securityContext на уровень пода
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
       containers:
       - name: local-path-provisioner
         image: rancher/local-path-provisioner:v0.0.26
         imagePullPolicy: IfNotPresent
+        # Добавляем securityContext на уровень контейнера
+        securityContext:
+          privileged: true
+          allowPrivilegeEscalation: true
+          runAsUser: 0
+          runAsGroup: 0
         env:
         - name: POD_NAMESPACE
           valueFrom:

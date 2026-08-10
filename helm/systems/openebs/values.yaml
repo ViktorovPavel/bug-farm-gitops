@@ -1,3 +1,7 @@
+# Отключаем хуки обновления (убираем ошибку ImagePullBackOff)
+preUpgradeHook:
+  enabled: false
+
 engines:
   local:
     lvm:
@@ -10,7 +14,13 @@ engines:
 
 localpv-provisioner:
   enabled: true
+  # Отключаем встроенное создание StorageClass от Helm (будем управлять через sc.yaml)
+  openebsLocalPV:
+    enabled: false
   helper:
     baseDir: "/var/local/openebs"
   localpv:
     basePath: "/var/local/openebs"
+
+analytics:
+  enabled: false

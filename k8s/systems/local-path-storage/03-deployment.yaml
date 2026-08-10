@@ -14,7 +14,6 @@ spec:
         app: local-path-provisioner
     spec:
       serviceAccountName: local-path-provisioner
-      # Убираем securityContext полностью
       containers:
       - name: local-path-provisioner
         image: rancher/local-path-provisioner:v0.0.26

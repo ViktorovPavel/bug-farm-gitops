@@ -1,14 +1,22 @@
-# Настройка пути для хранения данных томов
-localpv:
-  basePath: "/var/local/openebs"
+# Отключаем ненужные тяжелые движки storage
+engines:
+  replicated:
+    mayastor:
+      enabled: false
+  local:
+    lvm:
+      enabled: false
+    zfs:
+      enabled: false
 
-# Настройка вспомогательного контейнера (helper)
-helper:
-  baseDir: "/var/local/openebs"
+# Включаем только Dynamic LocalPV Hostpath
+localpv-provisioner:
+  enabled: true
+  localpv:
+    basePath: "/var/local/openebs"
+  helper:
+    baseDir: "/var/local/openebs"
 
-# Отключаем дефолтный StorageClass от Helm (так как у нас свой sc.yaml в Git)
-storageClass:
-  create: false
-
+# Отключаем телеметрию
 analytics:
   enabled: false

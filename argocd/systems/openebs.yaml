@@ -9,13 +9,20 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: openebs
   sources:
-    # 1. Готовый официальный оператор LocalPV прямо из GitHub
-    - repoURL: 'https://raw.githubusercontent.com/openebs/localpv-provisioner/master/deploy/gitops/openebs-localpv-operator.yaml'
-      targetRevision: HEAD
-      directory:
-        recurse: true
+    # 1. Официальный Helm-чарт OpenEBS v4 (из официального репо)
+    - repoURL: 'https://openebs.github.io/openebs'
+      chart: openebs
+      targetRevision: 4.2.0
+      helm:
+        valueFiles:
+          - '$values/helm/systems/openebs/values.yaml'
 
-    # 2. Наш StorageClass из твоего Git-репозитория
+    # 2. Ваш Git-репозиторий с файлом values.yaml
+    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+      targetRevision: HEAD
+      ref: values
+
+    # 3. Ваш StorageClass из Git
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       path: k8s/systems/openebs

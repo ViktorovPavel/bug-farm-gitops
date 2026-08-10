@@ -32,3 +32,10 @@ analytics:
 # Отключаем NDM (Node Disk Manager) если не нужен
 ndm:
   enabled: false
+  
+preUpgradeHook:
+  enabled: true
+  image:
+    repository: bitnami/kubectl
+    tag: 1.28.15  # или "latest"
+    pullPolicy: IfNotPresent

@@ -8,21 +8,19 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: local-path-storage
-  source:
-    repoURL: 'https://github.com/rancher/local-path-provisioner.git'
-    path: deploy/chart/local-path-provisioner
-    targetRevision: master
-    helm:
-      valueFiles:
-        - '$values/helm/systems/local-path-provisioner/values.yaml'
   sources:
+    - repoURL: 'https://github.com/rancher/local-path-provisioner'
+      chart: local-path-provisioner
+      targetRevision: 0.0.26
+      helm:
+        valueFiles:
+          - '$values/helm/systems/local-path-provisioner/values.yaml'
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
-      targetRevision: main
+      targetRevision: HEAD
       ref: values
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
       - ServerSideApply=true

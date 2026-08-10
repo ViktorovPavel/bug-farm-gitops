@@ -1,19 +1,15 @@
-# Default values for local-path-provisioner
-# Full reference: https://github.com/rancher/local-path-provisioner/blob/master/deploy/chart/local-path-provisioner/values.yaml
-
 storageClass:
   create: true
-  defaultClass: true          # делает StorageClass дефолтным [citation:2][citation:10]
+  defaultClass: true
   name: local-path
   reclaimPolicy: Delete
-  volumeBindingMode: WaitForFirstConsumer  # критично для локального хранилища [citation:8]
+  volumeBindingMode: WaitForFirstConsumer
 
 nodePathMap:
   - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
     paths:
-      - /var/local-path-provisioner   # путь для Talos OS [citation:4][citation:12]
+      - /var/local-path-provisioner
 
-# Ресурсы для слабых нод
 resources:
   requests:
     memory: 64Mi

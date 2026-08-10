@@ -9,7 +9,7 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: openebs
   sources:
-    # 1. Helm-чарт
+    # 1. Helm-чарт OpenEBS
     - repoURL: 'https://openebs.github.io/openebs'
       chart: openebs
       targetRevision: 4.1.1
@@ -17,12 +17,12 @@ spec:
         valueFiles:
           - '$values/helm/systems/openebs/values.yaml'
 
-    # 2. Ссылка на репозиторий для значения $values
+    # 2. Репозиторий с values.yaml
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       ref: values
 
-    # 3. Наш манифест StorageClass из Git
+    # 3. Манифест StorageClass из Git
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       path: k8s/systems/openebs
@@ -33,3 +33,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true

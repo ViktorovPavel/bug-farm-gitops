@@ -9,4 +9,4 @@ volumeBindingMode: WaitForFirstConsumer
 reclaimPolicy: Delete
 parameters:
   storage: "hostpath"
-  BasePath: "/var/local/openebs"
+  basePath: "/var/local/openebs"

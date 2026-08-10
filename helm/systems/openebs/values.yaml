@@ -1,7 +1,4 @@
-# Отключаем хуки обновления (убираем ошибку ImagePullBackOff)
-preUpgradeHook:
-  enabled: false
-
+# Отключаем ненужные тяжелые движки
 engines:
   local:
     lvm:
@@ -12,15 +9,25 @@ engines:
     mayastor:
       enabled: false
 
-localpv-provisioner:
+# Настройки для LocalPV (в 4.x используем ключ openebs-localpv)
+openebs-localpv:
   enabled: true
-  # Отключаем встроенное создание StorageClass от Helm (будем управлять через sc.yaml)
-  openebsLocalPV:
-    enabled: false
+
+  # Отключаем дефолтные SC из Helm, так как применяем свой манифест из k8s/systems/openebs
+  localpv:
+    enabled: true
+    basePath: "/var/local/openebs"
+    # Отключаем встроенное создание SC
+    storageClass:
+      create: false
+
+  # Путь для вспомогательного контейнера helper
   helper:
     baseDir: "/var/local/openebs"
-  localpv:
-    basePath: "/var/local/openebs"
+
+# Отключаем хуки обновления (убираем ошибку ImagePullBackOff с bitnami/kubectl)
+preUpgradeHook:
+  enabled: false
 
 analytics:
   enabled: false

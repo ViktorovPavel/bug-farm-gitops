@@ -1,4 +1,3 @@
-# 3. Единый Сервис для Cloudflare Tunnel
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,5 +10,6 @@ spec:
       port: 80
       targetPort: 10080
   selector:
+    # Эти селекторы Envoy Gateway сам добавит на свои поды
     gateway.envoyproxy.io/owning-gateway-name: default
     gateway.envoyproxy.io/owning-gateway-namespace: envoy-gateway-system

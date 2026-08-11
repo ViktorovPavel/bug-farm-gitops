@@ -14,15 +14,12 @@ spec:
       chart: gateway-helm
       targetRevision: v1.6.7
       helm:
-        # Патчи для отключения автоматического создания Gateway и GatewayClass
         parameters:
+          # Отключаем создание дефолтных ресурсов, чтобы не дублировать
           - name: config.skipCreateGatewayClass
             value: "true"
           - name: config.skipCreateGateway
             value: "true"
-          # Дополнительный патч: гарантируем, что контроллер не создает свой Service
-          - name: config.envoyGateway.provider.type
-            value: "Kubernetes"
 
     # Источник 2: Ваши кастомные манифесты (EnvoyProxy, Gateway, Service)
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'

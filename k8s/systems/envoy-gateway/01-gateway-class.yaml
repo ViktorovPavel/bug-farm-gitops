@@ -3,11 +3,14 @@ kind: Gateway
 metadata:
   name: default
   namespace: envoy-gateway-system
-  annotations:
-    # Говорим Envoy Gateway использовать наш сервис вместо создания своего
-    gateway.envoyproxy.io/use-existing-service: "envoy-gateway-ingress"
 spec:
   gatewayClassName: eg
+  # Привязываем кастомную конфигурацию EnvoyProxy
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: custom-envoy-config
   listeners:
     - name: http
       protocol: HTTP

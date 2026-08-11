@@ -10,6 +10,5 @@ spec:
       port: 80
       targetPort: 10080
   selector:
-    # Эти селекторы Envoy Gateway сам добавит на свои поды
     gateway.envoyproxy.io/owning-gateway-name: default
     gateway.envoyproxy.io/owning-gateway-namespace: envoy-gateway-system

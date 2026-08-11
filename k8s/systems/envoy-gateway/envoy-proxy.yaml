@@ -10,3 +10,4 @@ spec:
     kubernetes:
       envoyService:
         type: ClusterIP   # Форсирует создание ClusterIP вместо LoadBalancer
+        name: cloudflare-envoy-proxy

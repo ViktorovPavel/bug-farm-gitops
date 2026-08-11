@@ -11,13 +11,13 @@ spec:
   source:
     repoURL: 'oci://docker.io/envoyproxy/gateway-helm'
     chart: gateway-helm
-    targetRevision: v1.3.0  # Актуальная версия чарта Envoy Gateway
+    targetRevision: v1.8.3  # Актуальная версия!
     helm:
       parameters:
         - name: config.skipCreateGatewayClass
-          value: "false" # Пусть Helm создаст дефолтный GatewayClass (eg)
+          value: "false"
         - name: config.skipCreateGateway
-          value: "true"  # ОТКЛЮЧАЕМ авто-создание шлюза с LoadBalancer
+          value: "true"
   syncPolicy:
     automated:
       prune: true
@@ -25,3 +25,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - Replace=true
+      - Force=true

@@ -8,16 +8,21 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: envoy-gateway-system
-  source:
-    repoURL: 'oci://docker.io/envoyproxy/gateway-helm'
-    chart: gateway-helm
-    targetRevision: v1.8.3  # Актуальная версия!
-    helm:
-      parameters:
-        - name: config.skipCreateGatewayClass
-          value: "false"
-        - name: config.skipCreateGateway
-          value: "true"
+  sources:
+    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+      path: k8s/systems/envoy-gateway
+      targetRevision: HEAD
+      directory:
+        recurse: true
+    - repoURL: 'oci://docker.io/envoyproxy/gateway-helm'
+      chart: gateway-helm
+      targetRevision: v1.8.3  # Актуальная версия!
+      helm:
+        parameters:
+          - name: config.skipCreateGatewayClass
+            value: "false"
+          - name: config.skipCreateGateway
+            value: "true"
   syncPolicy:
     automated:
       prune: true

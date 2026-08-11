@@ -19,12 +19,14 @@ spec:
           vmsingle:
             enabled: true
             spec:
-              storageClassName: local-path
-              accessModes:
-                - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 5Gi # Объём под базу метрик
+              retentionPeriod: "1"
+              storage:
+                storageClassName: local-path
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 5Gi
 
           # 2. Хранилище для Grafana
           grafana:

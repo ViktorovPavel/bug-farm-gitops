@@ -1,56 +1,56 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: monitoring
-  namespace: argocd
-spec:
-  project: default
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: monitoring
-  sources:
-    # 1. Официальный Helm-чарт VictoriaMetrics
-    - repoURL: 'https://victoriametrics.github.io/helm-charts/'
-      chart: victoria-metrics-k8s-stack
-      targetRevision: 0.87.0
-      helm:
-        values: |
-          # 1. Хранилище для метрик VictoriaMetrics
-          vmsingle:
-            enabled: true
-            spec:
-              storageClassName: local-path
-              accessModes:
-                - ReadWriteOnce
-              resources:
-                requests:
-                  storage: 5Gi # Объём под базу метрик
-
-          # 2. Хранилище для Grafana
-          grafana:
-            enabled: true
-            adminUser: "admin"
-            adminPassword: "admin"
-            persistence:
-              enabled: true
-              storageClassName: local-path
-              accessModes:
-                - ReadWriteOnce
-              size: 200Mi # Oптимизированный размер под SQLite
-
-    # 2. Ссылка на наш Git-репозиторий для значения values.yaml
-    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
-      targetRevision: HEAD
-      ref: values
-
-    # 3. Чистые манифесты HTTPRoute (Grafana, Hubble, Drop-test)
-    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
-      targetRevision: HEAD
-      path: k8s/systems/monitoring
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: monitoring
+#  namespace: argocd
+#spec:
+#  project: default
+#  destination:
+#    server: 'https://kubernetes.default.svc'
+#    namespace: monitoring
+#  sources:
+#    # 1. Официальный Helm-чарт VictoriaMetrics
+#    - repoURL: 'https://victoriametrics.github.io/helm-charts/'
+#      chart: victoria-metrics-k8s-stack
+#      targetRevision: 0.87.0
+#      helm:
+#        values: |
+#          # 1. Хранилище для метрик VictoriaMetrics
+#          vmsingle:
+#            enabled: true
+#            spec:
+#              storageClassName: local-path
+#              accessModes:
+#                - ReadWriteOnce
+#              resources:
+#                requests:
+#                  storage: 5Gi # Объём под базу метрик
+#
+#          # 2. Хранилище для Grafana
+#          grafana:
+#            enabled: true
+#            adminUser: "admin"
+#            adminPassword: "admin"
+#            persistence:
+#              enabled: true
+#              storageClassName: local-path
+#              accessModes:
+#                - ReadWriteOnce
+#              size: 200Mi # Oптимизированный размер под SQLite
+#
+#    # 2. Ссылка на наш Git-репозиторий для значения values.yaml
+#    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+#      targetRevision: HEAD
+#      ref: values
+#
+#    # 3. Чистые манифесты HTTPRoute (Grafana, Hubble, Drop-test)
+#    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+#      targetRevision: HEAD
+#      path: k8s/systems/monitoring
+#  syncPolicy:
+#    automated:
+#      prune: true
+#      selfHeal: true
+#    syncOptions:
+#      - CreateNamespace=true
+#      - ServerSideApply=true

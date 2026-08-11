@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: envoy-gateway
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: envoy-gateway-system
+  source:
+    repoURL: 'oci://docker.io/envoyproxy/gateway-helm'
+    chart: gateway-helm
+    targetRevision: v1.3.0  # Актуальная версия чарта Envoy Gateway
+    helm:
+      parameters:
+        - name: config.skipCreateGatewayClass
+          value: "false" # Пусть Helm создаст дефолтный GatewayClass (eg)
+        - name: config.skipCreateGateway
+          value: "true"  # ОТКЛЮЧАЕМ авто-создание шлюза с LoadBalancer
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

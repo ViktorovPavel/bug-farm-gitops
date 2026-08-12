@@ -11,16 +11,17 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: medik8s-system
   sources:
-    # 1. Поправленный URL Helm-репозитория Medik8s
-    - repoURL: 'https://medik8s.github.io'
-      chart: node-healthcheck-operator
-      targetRevision: 0.9.0
-      helm:
-        values: |
-          selfNodeRemediation:
-            enabled: true
+    # 1. Self Node Remediation Operator (Исполнитель ремедиации)
+    - repoURL: 'https://github.com/medik8s/self-node-remediation.git'
+      path: config/deploy
+      targetRevision: v0.9.0 # Актуальный релиз или HEAD
 
-    # 2. Твои манифесты из Git
+    # 2. Node Healthcheck Operator (Детектор упавших нод)
+    - repoURL: 'https://github.com/medik8s/node-healthcheck-operator.git'
+      path: config/deploy
+      targetRevision: v0.12.0 # Актуальный релиз
+
+    # 3. Твои правила и конфиги (NodeHealthCheck + SelfNodeRemediationTemplate)
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       path: k8s/systems/node-healthcheck-operator
       targetRevision: HEAD

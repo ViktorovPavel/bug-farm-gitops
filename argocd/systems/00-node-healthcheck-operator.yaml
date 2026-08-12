@@ -11,17 +11,17 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: medik8s-system
   sources:
-    # 1. Self Node Remediation Operator (Исполнитель ремедиации)
+    # 1. Self Node Remediation Operator
     - repoURL: 'https://github.com/medik8s/self-node-remediation.git'
-      path: config/deploy
-      targetRevision: v0.9.0 # Актуальный релиз или HEAD
+      path: config/default
+      targetRevision: v0.13.0
 
-    # 2. Node Healthcheck Operator (Детектор упавших нод)
+    # 2. Node Healthcheck Operator
     - repoURL: 'https://github.com/medik8s/node-healthcheck-operator.git'
-      path: config/deploy
-      targetRevision: v0.12.0 # Актуальный релиз
+      path: config/default
+      targetRevision: v0.12.0
 
-    # 3. Твои правила и конфиги (NodeHealthCheck + SelfNodeRemediationTemplate)
+    # 3. Твой репозиторий с кастомными CRD (NodeHealthCheck + SelfNodeRemediationTemplate)
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       path: k8s/systems/node-healthcheck-operator
       targetRevision: HEAD

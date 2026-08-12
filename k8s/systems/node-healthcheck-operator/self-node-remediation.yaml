@@ -1,0 +1,10 @@
+apiVersion: self-node-remediation.medik8s.io/v1alpha1
+kind: SelfNodeRemediationTemplate
+metadata:
+  name: self-node-remediation-resource-deletion-template
+  namespace: medik8s-system
+spec:
+  template:
+    spec:
+      # Режим очистки: заставляет оператор принудительно удалить поды и сам объект Node из API
+      remediationStrategy: ResourceDeletion

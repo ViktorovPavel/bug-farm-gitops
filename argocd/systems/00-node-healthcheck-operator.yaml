@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-healthcheck-operator
+  namespace: argocd
+  annotations:
+    # Задаем Sync Wave 0
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: medik8s-system
+  sources:
+    # Источник 1: Официальный Helm-чарт Node Healthcheck от Medik8s
+    - repoURL: 'https://medik8s.github.io/helm-charts'
+      chart: node-healthcheck-operator
+      targetRevision: 0.9.0 # Выбей актуальную версию или оставь нужную
+      helm:
+        values: |
+          # Включаем установку зависимого оператора Self-Node-Remediation, если поддерживается чартом
+          selfNodeRemediation:
+            enabled: true
+
+    # Источник 2: Твои кастомные CRD манифесты (NodeHealthCheck + SelfNodeRemediationTemplate)
+    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+      path: k8s/systems/node-healthcheck-operator
+      targetRevision: HEAD
+      directory:
+        recurse: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

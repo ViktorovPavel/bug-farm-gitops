@@ -1,0 +1,32 @@
+apiVersion: remediate.medik8s.io/v1alpha1
+kind: NodeHealthCheck
+metadata:
+  name: talos-nodes-healthcheck
+spec:
+  # Выбираем ноды, которые мониторим (в вашем случае все 3 мастера/воркера)
+  selector:
+    matchExpressions:
+      - key: kubernetes.io/os
+        operator: In
+        values:
+          - linux
+
+  # Условия, при которых нода считается "больной"
+  unhealthyConditions:
+    - type: Ready
+      status: "False"
+      duration: 3m # Ждем 3 минуты перед запуском выпила
+    - type: Ready
+      status: "Unknown"
+      duration: 3m
+
+  # Защита от "домино": не запускать очистку, если упало больше 1 ноды из 3 (33%)
+  # Если упадет 2 ноды из 3 — кластер потеряет кворум etcd, и выпиливать ноды уже опасно
+  maxUnhealthy: 1
+
+  # Какой механизатор использовать для удаления/ремедиации
+  remediationTemplate:
+    apiVersion: self-node-remediation.medik8s.io/v1alpha1
+    kind: SelfNodeRemediationTemplate
+    name: self-node-remediation-resource-deletion-template
+    namespace: medik8s-system

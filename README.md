@@ -71,9 +71,9 @@ kubectl config use-context admin@bug-farm
 Применяем патч с дополнительными монтированиями для `kubelet` на всех узлах:
 
 ```bash
-talosctl patch machineconfig --nodes 192.168.0.100 --patch @talos/openebs-patch.yaml
-talosctl patch machineconfig --nodes 192.168.0.101 --patch @talos/openebs-patch.yaml
-talosctl patch machineconfig --nodes 192.168.0.102 --patch @talos/openebs-patch.yaml
+talosctl patch machineconfig --nodes 192.168.0.100 --patch @talos/patch.yaml
+talosctl patch machineconfig --nodes 192.168.0.101 --patch @talos/patch.yaml
+talosctl patch machineconfig --nodes 192.168.0.102 --patch @talos/patch.yaml
 ```
 
 ---

@@ -20,6 +20,6 @@ spec:
       backendRefs:
         - group: ""
           kind: Service
-          name: argocd-server
+          name: stub-service
           port: 80
           weight: 1

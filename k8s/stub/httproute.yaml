@@ -5,7 +5,9 @@ metadata:
   namespace: stub
 spec:
   parentRefs:
-    - name: default
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: cloudflare-gateway
       namespace: envoy-gateway-system
   hostnames:
     - "bug-farm.xyz"
@@ -16,5 +18,8 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: stub-service
+        - group: ""
+          kind: Service
+          name: argocd-server
           port: 80
+          weight: 1

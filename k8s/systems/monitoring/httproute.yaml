@@ -5,7 +5,9 @@ metadata:
   namespace: monitoring
 spec:
   parentRefs:
-    - name: cloudflare-gateway
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: cloudflare-gateway
       namespace: envoy-gateway-system
   hostnames:
     - "grafana.bug-farm.xyz"
@@ -15,5 +17,8 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: monitoring-grafana  # <--- Поправили имя сервиса
-          port: 80                  # <--- Порт совпадает (80/TCP)
+        - group: ""
+          kind: Service
+          name: monitoring-grafana
+          port: 80
+          weight: 1

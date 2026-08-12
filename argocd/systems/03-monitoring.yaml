@@ -28,7 +28,7 @@ spec:
                   requests:
                     storage: 5Gi
 
-          # 2. Хранилище для Grafana
+          # 2. Хранилище и конфиг сайдкаров для Grafana
           grafana:
             enabled: true
             adminUser: "admin"
@@ -38,14 +38,20 @@ spec:
               storageClassName: local-path
               accessModes:
                 - ReadWriteOnce
-              size: 200Mi # Oптимизированный размер под SQLite
+              size: 200Mi # Оптимизированный размер под SQLite
+            sidecar:
+              dashboards:
+                enabled: true
+                env:
+                  - name: PORT
+                    value: "8080"
+              datasources:
+                enabled: true
+                env:
+                  - name: PORT
+                    value: "8081"
 
-    # 2. Ссылка на наш Git-репозиторий для значения values.yaml
-    - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
-      targetRevision: HEAD
-      ref: values
-
-    # 3. Чистые манифесты HTTPRoute (Grafana, Hubble, Drop-test)
+    # 2. Чистые манифесты HTTPRoute (Grafana, Hubble, Drop-test)
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
       targetRevision: HEAD
       path: k8s/systems/monitoring

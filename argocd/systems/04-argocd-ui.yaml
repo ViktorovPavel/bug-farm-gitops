@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-ui
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'
+    targetRevision: HEAD
+    path: k8s/systems/argocd-ui
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd   # <-- Направляем в собственный namespace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -3,9 +3,19 @@ kind: Kustomization
 
 namespace: argocd
 
-# Подтягиваем официальные манифесты ArgoCD v2.10.0 (можно обновить версию при желании)
+# Подтягиваем официальные манифесты ArgoCD v2.10.0
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/ha/install.yaml
 
-# Зона для будущих кастомизаций (например, включение Server-Side Apply, настройка OIDC или Ingress)
-patches: []
+# Патчим параметры ArgoCD, чтобы отключить TLS на самом сервере
+patches:
+  - target:
+      kind: ConfigMap
+      name: argocd-cmd-params-cm
+    patch: |-
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: argocd-cmd-params-cm
+      data:
+        server.insecure: "true"

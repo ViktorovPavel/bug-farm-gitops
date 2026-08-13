@@ -48,17 +48,6 @@ spec:
       targetRevision: HEAD
       path: k8s/systems/cilium
 
-  ignoreDifferences:
-    - group: apps
-      kind: DaemonSet
-      jsonPointers:
-        - /spec/template/spec/securityContext/appArmorProfile
-        - /spec/template/spec/hostUsers
-    - group: apps
-      kind: Deployment
-      jsonPointers:
-        - /spec/template/spec/securityContext/appArmorProfile
-        - /spec/template/spec/hostUsers
   syncPolicy:
     automated:
       prune: true

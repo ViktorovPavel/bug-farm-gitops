@@ -6,8 +6,8 @@ namespace: argocd
 # Подтягиваем официальные манифесты ArgoCD v2.10.0
 resources:
 #  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/ha/install.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/install.yaml
-
+#  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.10.0/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 # Патчим параметры ArgoCD, чтобы отключить TLS на самом сервере
 patches:
   - target:

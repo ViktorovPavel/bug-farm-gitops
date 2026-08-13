@@ -16,6 +16,10 @@ spec:
       targetRevision: 1.20.0
       helm:
         values: |
+          # Жёстко задаем 1 реплику для работы на 1 ноде:
+          operator:
+            replicas: 1
+          
           # Использование eBPF заменяет kube-proxy (стандартная практика для Talos)
           kubeProxyReplacement: true
           
@@ -33,7 +37,7 @@ spec:
               enabled: false
             hostRoot: /sys/fs/cgroup
           
-          # Отключаем автоматический сброс состояния при перезапуске (решает проблемы с clean-cilium-state)
+          # Отключаем автоматический сброс состояния при перезапуске
           cleanState: false
           cleanBpfState: false
           
@@ -42,6 +46,7 @@ spec:
             enabled: true
             relay:
               enabled: true   # Агрегатор логов Hubble
+              replicas: 1     # <--- Тоже 1 реплика
             ui:
               enabled: true   # Веб-интерфейс Hubble
     - repoURL: 'https://github.com/ViktorovPavel/bug-farm-gitops.git'

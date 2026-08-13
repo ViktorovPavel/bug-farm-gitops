@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: envoy-gateway
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   project: default
   destination:
@@ -15,8 +17,8 @@ spec:
       directory:
         recurse: true
     - repoURL: 'oci://docker.io/envoyproxy/gateway-helm'
-      chart: gateway-helm
-      targetRevision: v1.8.3  # Актуальная версия!
+      # Поле 'chart' удалено!
+      targetRevision: v1.8.3
       helm:
         parameters:
           - name: config.skipCreateGatewayClass

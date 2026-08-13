@@ -17,8 +17,8 @@ spec:
       directory:
         recurse: true
     - repoURL: 'oci://docker.io/envoyproxy/gateway-helm'
-      # Поле 'chart' удалено!
-      targetRevision: v1.8.3
+      chart: gateway-helm
+      targetRevision: v1.8.3  # Актуальная версия!
       helm:
         parameters:
           - name: config.skipCreateGatewayClass
